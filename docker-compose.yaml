@@ -1,0 +1,40 @@
+services:
+  nginx:
+    image: 'nginx:stable-alpine'
+    container_name: container_nginx 
+    restart: always 
+    ports: 
+      - '80:80'
+    networks:
+      - projet-pedago
+
+  db:
+    image: postgres:latest
+    container_name: container_bdd
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: bd
+    networks:
+      - projet-pedago
+
+  adminer: 
+    image: adminer 
+    container_name: container_adminer
+    restart: always
+    ports:
+      - '7777:8080'
+    networks:
+      - projet-pedago
+
+networks:
+  projet-pedago:
+    driver: bridge
+
+volumes:
+  db_data:
